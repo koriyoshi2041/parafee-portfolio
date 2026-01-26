@@ -6,7 +6,7 @@ export function CustomCursor() {
   const cursorRef = useRef<HTMLDivElement>(null)
   const cursorDotRef = useRef<HTMLDivElement>(null)
   const hasMovedRef = useRef(false)
-  const { cursorVariant, isLoading } = useStore()
+  const { cursorVariant } = useStore()
 
   useEffect(() => {
     const cursor = cursorRef.current
@@ -114,8 +114,7 @@ export function CustomCursor() {
     }
   }, [cursorVariant])
 
-  if (isLoading) return null
-
+  // Always render cursor, don't hide during loading
   return (
     <>
       {/* Outer ring cursor */}
