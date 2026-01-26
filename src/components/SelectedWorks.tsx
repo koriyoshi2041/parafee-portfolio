@@ -7,10 +7,11 @@ gsap.registerPlugin(ScrollTrigger)
 
 const projects = [
   { id: 1, title: 'This Portfolio', category: 'Creative Dev / WebGL', color: '#00d9ff', url: 'https://github.com/koriyoshi2041/parafee-portfolio' },
-  { id: 2, title: 'Private MLaaS', category: 'FHE + Machine Learning', color: '#ff00d9', url: 'https://github.com/koriyoshi2041/Private-MLaaS-FHE' },
-  { id: 3, title: 'BB84 Visualizer', category: 'Quantum Cryptography', color: '#00ff88', url: 'https://github.com/koriyoshi2041/BB84-Visualizer' },
-  { id: 4, title: 'Lenia Vivarium', category: 'Artificial Life', color: '#ffcc00', url: 'https://github.com/koriyoshi2041/LeniaVivarium' },
-  // TODO: Add 2 projects from monad-works org
+  { id: 2, title: 'SCRAWL', category: 'MonadWorks', color: '#ff00d9', url: 'https://github.com/MonadWorks/SCRAWL' },
+  { id: 3, title: 'Claude Code Toolkit', category: 'MonadWorks / AI Tools', color: '#ff6b35', url: 'https://github.com/MonadWorks/claude-code-toolkit' },
+  { id: 4, title: 'Private MLaaS', category: 'FHE + Machine Learning', color: '#00ff88', url: 'https://github.com/koriyoshi2041/Private-MLaaS-FHE' },
+  { id: 5, title: 'BB84 Visualizer', category: 'Quantum Cryptography', color: '#8b5cf6', url: 'https://github.com/koriyoshi2041/BB84-Visualizer' },
+  { id: 6, title: 'Lenia Vivarium', category: 'Artificial Life', color: '#ffcc00', url: 'https://github.com/koriyoshi2041/LeniaVivarium' },
 ]
 
 function ProjectCard({
