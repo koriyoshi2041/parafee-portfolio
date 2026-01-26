@@ -264,25 +264,75 @@ export function SelectedWorks() {
       }
     )
 
-    // Staggered card animations
+    // Enhanced staggered card animations with more dramatic entrance
     const cards = gridRef.current?.querySelectorAll('.project-card')
     if (cards) {
-      gsap.fromTo(
-        cards,
-        { opacity: 0, y: 100, rotateX: -15 },
-        {
+      // Set initial state
+      gsap.set(cards, {
+        opacity: 0,
+        y: 120,
+        scale: 0.8,
+        rotateX: -20,
+        rotateY: 15,
+        filter: 'blur(10px)',
+        transformPerspective: 1000,
+      })
+
+      // Create staggered entrance animation
+      cards.forEach((card, index) => {
+        // Alternate direction for visual interest
+        const isEven = index % 2 === 0
+        const xOffset = isEven ? -50 : 50
+        const rotateDirection = isEven ? 15 : -15
+
+        gsap.set(card, {
+          x: xOffset,
+          rotateY: rotateDirection,
+        })
+
+        gsap.to(card, {
           opacity: 1,
           y: 0,
+          x: 0,
+          scale: 1,
           rotateX: 0,
-          duration: 0.8,
-          stagger: 0.15,
-          ease: 'power3.out',
+          rotateY: 0,
+          filter: 'blur(0px)',
+          duration: 1.2,
+          delay: index * 0.15,
+          ease: 'power4.out',
           scrollTrigger: {
-            trigger: gridRef.current,
-            start: 'top 70%',
+            trigger: card,
+            start: 'top 85%',
+            toggleActions: 'play none none none',
           },
-        }
-      )
+        })
+
+        // Add a subtle bounce effect at the end
+        gsap.to(card, {
+          y: -10,
+          duration: 0.3,
+          delay: index * 0.15 + 1.0,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 85%',
+            toggleActions: 'play none none none',
+          },
+        })
+
+        gsap.to(card, {
+          y: 0,
+          duration: 0.4,
+          delay: index * 0.15 + 1.3,
+          ease: 'bounce.out',
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 85%',
+            toggleActions: 'play none none none',
+          },
+        })
+      })
     }
 
     return () => {
