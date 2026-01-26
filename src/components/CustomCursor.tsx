@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { useStore } from '../store/useStore'
 
 export function CustomCursor() {
   const cursorRef = useRef<HTMLDivElement>(null)
   const cursorDotRef = useRef<HTMLDivElement>(null)
-  const [isVisible, setIsVisible] = useState(false)
+  const hasMovedRef = useRef(false)
   const { cursorVariant, isLoading } = useStore()
 
   useEffect(() => {
@@ -13,19 +13,19 @@ export function CustomCursor() {
     const cursorDot = cursorDotRef.current
     if (!cursor || !cursorDot) return
 
-    // Set centering offset using GSAP to avoid transform conflicts
-    gsap.set(cursor, { xPercent: -50, yPercent: -50 })
-    gsap.set(cursorDot, { xPercent: -50, yPercent: -50 })
+    // Initially hide cursors
+    gsap.set(cursor, { xPercent: -50, yPercent: -50, opacity: 0 })
+    gsap.set(cursorDot, { xPercent: -50, yPercent: -50, opacity: 0 })
 
     const handleMouseMove = (e: MouseEvent) => {
       const mouseX = e.clientX
       const mouseY = e.clientY
 
-      // Show cursor on first mouse move
-      if (!isVisible) {
-        setIsVisible(true)
-        gsap.set(cursor, { x: mouseX, y: mouseY })
-        gsap.set(cursorDot, { x: mouseX, y: mouseY })
+      // Show and position cursor on first move
+      if (!hasMovedRef.current) {
+        hasMovedRef.current = true
+        gsap.set(cursor, { x: mouseX, y: mouseY, opacity: 1 })
+        gsap.set(cursorDot, { x: mouseX, y: mouseY, opacity: 1 })
       }
 
       // Instant follow for dot
@@ -50,13 +50,13 @@ export function CustomCursor() {
     return () => {
       window.removeEventListener('mousemove', handleMouseMove)
     }
-  }, [isVisible])
+  }, [])
 
   // Cursor variant animations
   useEffect(() => {
     const cursor = cursorRef.current
     const cursorDot = cursorDotRef.current
-    if (!cursor || !cursorDot) return
+    if (!cursor || !cursorDot || !hasMovedRef.current) return
 
     switch (cursorVariant) {
       case 'hover':
@@ -121,22 +121,20 @@ export function CustomCursor() {
       {/* Outer ring cursor */}
       <div
         ref={cursorRef}
-        className="fixed top-0 left-0 w-10 h-10 pointer-events-none z-[9998] mix-blend-difference transition-opacity duration-300"
+        className="fixed top-0 left-0 w-10 h-10 pointer-events-none z-[9998] mix-blend-difference"
         style={{
           border: '1px solid var(--pure-white)',
           borderRadius: '50%',
-          opacity: isVisible ? 1 : 0,
         }}
       />
       {/* Inner dot cursor */}
       <div
         ref={cursorDotRef}
-        className="fixed top-0 left-0 w-1.5 h-1.5 pointer-events-none z-[9999] transition-opacity duration-300"
+        className="fixed top-0 left-0 w-1.5 h-1.5 pointer-events-none z-[9999]"
         style={{
           backgroundColor: 'var(--electric-blue)',
           borderRadius: '50%',
           boxShadow: '0 0 10px var(--electric-blue)',
-          opacity: isVisible ? 1 : 0,
         }}
       />
     </>
