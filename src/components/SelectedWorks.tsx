@@ -6,12 +6,11 @@ import { useStore } from '../store/useStore'
 gsap.registerPlugin(ScrollTrigger)
 
 const projects = [
-  { id: 1, title: 'NewsDiver', category: 'AI Knowledge System', color: '#00d9ff', url: 'https://github.com/koriyoshi2041/MVPnewsdiver' },
+  { id: 1, title: 'This Portfolio', category: 'Creative Dev / WebGL', color: '#00d9ff', url: 'https://github.com/koriyoshi2041/parafee-portfolio' },
   { id: 2, title: 'Private MLaaS', category: 'FHE + Machine Learning', color: '#ff00d9', url: 'https://github.com/koriyoshi2041/Private-MLaaS-FHE' },
   { id: 3, title: 'BB84 Visualizer', category: 'Quantum Cryptography', color: '#00ff88', url: 'https://github.com/koriyoshi2041/BB84-Visualizer' },
   { id: 4, title: 'Lenia Vivarium', category: 'Artificial Life', color: '#ffcc00', url: 'https://github.com/koriyoshi2041/LeniaVivarium' },
-  { id: 5, title: '116 Days', category: 'Challenge Tracker', color: '#ff6b35', url: 'https://github.com/koriyoshi2041/116days' },
-  { id: 6, title: 'Startup Videos', category: 'Video Platform', color: '#8b5cf6', url: 'https://github.com/koriyoshi2041/startupvideos' },
+  // TODO: Add 2 projects from monad-works org
 ]
 
 function ProjectCard({
