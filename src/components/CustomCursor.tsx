@@ -12,12 +12,13 @@ export function CustomCursor() {
     const cursorDot = cursorDotRef.current
     if (!cursor || !cursorDot) return
 
-    let mouseX = 0
-    let mouseY = 0
+    // Set centering offset using GSAP to avoid transform conflicts
+    gsap.set(cursor, { xPercent: -50, yPercent: -50 })
+    gsap.set(cursorDot, { xPercent: -50, yPercent: -50 })
 
     const handleMouseMove = (e: MouseEvent) => {
-      mouseX = e.clientX
-      mouseY = e.clientY
+      const mouseX = e.clientX
+      const mouseY = e.clientY
 
       // Instant follow for dot
       gsap.to(cursorDot, {
@@ -114,7 +115,6 @@ export function CustomCursor() {
         ref={cursorRef}
         className="fixed top-0 left-0 w-10 h-10 pointer-events-none z-[9998] mix-blend-difference"
         style={{
-          transform: 'translate(-50%, -50%)',
           border: '1px solid var(--pure-white)',
           borderRadius: '50%',
         }}
@@ -124,7 +124,6 @@ export function CustomCursor() {
         ref={cursorDotRef}
         className="fixed top-0 left-0 w-1.5 h-1.5 pointer-events-none z-[9999]"
         style={{
-          transform: 'translate(-50%, -50%)',
           backgroundColor: 'var(--electric-blue)',
           borderRadius: '50%',
           boxShadow: '0 0 10px var(--electric-blue)',
