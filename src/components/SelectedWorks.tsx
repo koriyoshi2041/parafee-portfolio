@@ -10,8 +10,6 @@ const projects = [
   { id: 2, title: 'Private MLaaS', category: 'FHE + Machine Learning', color: '#ff00d9', url: 'https://github.com/koriyoshi2041/Private-MLaaS-FHE' },
   { id: 3, title: 'BB84 Visualizer', category: 'Quantum Cryptography', color: '#00ff88', url: 'https://github.com/koriyoshi2041/BB84-Visualizer' },
   { id: 4, title: 'Lenia Vivarium', category: 'Artificial Life', color: '#ffcc00', url: 'https://github.com/koriyoshi2041/LeniaVivarium' },
-  { id: 5, title: '@kigland/studio', category: '3D Component Library', color: '#ff4444', url: 'https://github.com/kigland' },
-  { id: 6, title: 'KnowledgeOS', category: 'Knowledge Management', color: '#8844ff', url: 'https://github.com/kigland' },
 ]
 
 function ProjectCard({
@@ -85,10 +83,16 @@ function ProjectCard({
     setCursorVariant('hover')
   }
 
+  const handleClick = () => {
+    if (project.url) {
+      window.open(project.url, '_blank', 'noopener,noreferrer')
+    }
+  }
+
   return (
     <div
       ref={cardRef}
-      className="project-card aspect-[4/5] rounded-lg overflow-hidden relative"
+      className="project-card aspect-[4/5] rounded-lg overflow-hidden relative cursor-pointer"
       style={{
         perspective: '1000px',
         transformStyle: 'preserve-3d',
@@ -96,6 +100,7 @@ function ProjectCard({
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       onMouseEnter={handleMouseEnter}
+      onClick={handleClick}
     >
       {/* Animated background */}
       <div
