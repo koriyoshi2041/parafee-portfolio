@@ -70,11 +70,11 @@ function TypewriterCode() {
 
   useEffect(() => {
     if (!isTyping) return
-    if (currentLineIndex >= codeLines.length) return
+    if (currentLineIndex >= CODE_LINES.length) return
 
     // Calculate total chars in current line
-    const currentLine = codeLines[currentLineIndex]
-    const totalChars = currentLine.reduce((sum, token) => sum + token.text.length, 0)
+    const currentLine = CODE_LINES[currentLineIndex]
+    const totalChars = currentLine.reduce((sum: number, token: CodeToken) => sum + token.text.length, 0)
 
     if (currentCharIndex < totalChars) {
       const timeout = setTimeout(() => {
@@ -115,7 +115,7 @@ function TypewriterCode() {
 
       return () => clearTimeout(timeout)
     }
-  }, [isTyping, currentLineIndex, currentCharIndex, codeLines])
+  }, [isTyping, currentLineIndex, currentCharIndex])
 
   return (
     <div
@@ -137,11 +137,9 @@ function TypewriterCode() {
                 {token.text}
               </span>
             ))}
-            {lineIdx === currentLineIndex - 1 ||
-             (lineIdx === displayedTokens.length - 1 && currentLineIndex < codeLines.length) ? null : null}
           </div>
         ))}
-        {currentLineIndex < codeLines.length && (
+        {currentLineIndex < CODE_LINES.length && (
           <span className="inline-block w-2 h-4 bg-[var(--electric-blue)] animate-blink ml-0.5 align-middle" />
         )}
       </pre>
@@ -375,25 +373,8 @@ export function AboutSection() {
             ))}
           </div>
 
-          {/* Decorative code block */}
-          <div
-            className="mt-12 p-6 bg-[var(--void-deep)] rounded-lg border border-[var(--gray-subtle)] font-mono text-sm overflow-hidden"
-            onMouseEnter={() => setCursorVariant('hover')}
-            onMouseLeave={() => setCursorVariant('default')}
-          >
-            <div className="flex gap-2 mb-4">
-              <span className="w-3 h-3 rounded-full bg-[#ff5f56]" />
-              <span className="w-3 h-3 rounded-full bg-[#ffbd2e]" />
-              <span className="w-3 h-3 rounded-full bg-[#27ca40]" />
-            </div>
-            <pre className="text-[var(--gray-muted)] whitespace-pre-wrap">
-              <span className="text-[var(--electric-blue)]">const</span> developer = {'{'}
-              {'\n'}  <span className="text-[#ff79c6]">passion</span>: <span className="text-[#f1fa8c]">&quot;infinite&quot;</span>,
-              {'\n'}  <span className="text-[#ff79c6]">coffee</span>: <span className="text-[#bd93f9]">true</span>,
-              {'\n'}  <span className="text-[#ff79c6]">creativity</span>: <span className="text-[#50fa7b]">() =&gt; &quot;always&quot;</span>
-              {'\n'}{'}'};
-            </pre>
-          </div>
+          {/* Typewriter code block */}
+          <TypewriterCode />
         </div>
       </div>
     </section>
