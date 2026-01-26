@@ -1,10 +1,11 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { useStore } from '../store/useStore'
 
 export function CustomCursor() {
   const cursorRef = useRef<HTMLDivElement>(null)
   const cursorDotRef = useRef<HTMLDivElement>(null)
+  const [isVisible, setIsVisible] = useState(false)
   const { cursorVariant, isLoading } = useStore()
 
   useEffect(() => {
@@ -19,6 +20,13 @@ export function CustomCursor() {
     const handleMouseMove = (e: MouseEvent) => {
       const mouseX = e.clientX
       const mouseY = e.clientY
+
+      // Show cursor on first mouse move
+      if (!isVisible) {
+        setIsVisible(true)
+        gsap.set(cursor, { x: mouseX, y: mouseY })
+        gsap.set(cursorDot, { x: mouseX, y: mouseY })
+      }
 
       // Instant follow for dot
       gsap.to(cursorDot, {
@@ -42,7 +50,7 @@ export function CustomCursor() {
     return () => {
       window.removeEventListener('mousemove', handleMouseMove)
     }
-  }, [])
+  }, [isVisible])
 
   // Cursor variant animations
   useEffect(() => {
@@ -113,20 +121,22 @@ export function CustomCursor() {
       {/* Outer ring cursor */}
       <div
         ref={cursorRef}
-        className="fixed top-0 left-0 w-10 h-10 pointer-events-none z-[9998] mix-blend-difference"
+        className="fixed top-0 left-0 w-10 h-10 pointer-events-none z-[9998] mix-blend-difference transition-opacity duration-300"
         style={{
           border: '1px solid var(--pure-white)',
           borderRadius: '50%',
+          opacity: isVisible ? 1 : 0,
         }}
       />
       {/* Inner dot cursor */}
       <div
         ref={cursorDotRef}
-        className="fixed top-0 left-0 w-1.5 h-1.5 pointer-events-none z-[9999]"
+        className="fixed top-0 left-0 w-1.5 h-1.5 pointer-events-none z-[9999] transition-opacity duration-300"
         style={{
           backgroundColor: 'var(--electric-blue)',
           borderRadius: '50%',
           boxShadow: '0 0 10px var(--electric-blue)',
+          opacity: isVisible ? 1 : 0,
         }}
       />
     </>

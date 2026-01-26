@@ -185,22 +185,50 @@ function ProjectCard({
         />
       </div>
 
-      {/* Floating particles */}
+      {/* Particle burst effect */}
       {isHovered && (
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          {[...Array(5)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-1 h-1 rounded-full animate-float"
-              style={{
-                backgroundColor: project.color,
-                left: `${20 + i * 15}%`,
-                bottom: '20%',
-                animationDelay: `${i * 0.2}s`,
-                boxShadow: `0 0 10px ${project.color}`,
-              }}
-            />
-          ))}
+          {/* Burst particles from center */}
+          {[...Array(12)].map((_, i) => {
+            const angle = (i * 30) * (Math.PI / 180)
+            // Use deterministic pseudo-random based on index
+            const distance = 80 + ((i * 17) % 40)
+            return (
+              <div
+                key={`burst-${i}`}
+                className="absolute w-2 h-2 rounded-full particle-burst"
+                style={{
+                  backgroundColor: project.color,
+                  left: '50%',
+                  top: '50%',
+                  boxShadow: `0 0 10px ${project.color}, 0 0 20px ${project.color}`,
+                  '--tx': `${Math.cos(angle) * distance}px`,
+                  '--ty': `${Math.sin(angle) * distance}px`,
+                  animationDelay: `${i * 0.03}s`,
+                } as React.CSSProperties}
+              />
+            )
+          })}
+          {/* Sparkle particles */}
+          {[...Array(8)].map((_, i) => {
+            // Deterministic positions based on index using golden ratio distribution
+            const phi = 1.618033988749
+            const left = ((i * phi * 80) % 80) + 10
+            const top = ((i * phi * 50 + 30) % 80) + 10
+            return (
+              <div
+                key={`sparkle-${i}`}
+                className="absolute w-1 h-1 rounded-full particle-sparkle"
+                style={{
+                  backgroundColor: '#fff',
+                  left: `${left}%`,
+                  top: `${top}%`,
+                  boxShadow: `0 0 6px ${project.color}`,
+                  animationDelay: `${i * 0.1}s`,
+                }}
+              />
+            )
+          })}
         </div>
       )}
     </div>
@@ -300,18 +328,34 @@ export function SelectedWorks() {
       </div>
 
       <style>{`
-        @keyframes float {
-          0%, 100% {
-            transform: translateY(0) scale(1);
+        @keyframes particle-burst {
+          0% {
+            transform: translate(-50%, -50%) scale(0);
             opacity: 1;
           }
           50% {
-            transform: translateY(-100px) scale(0.5);
+            opacity: 1;
+          }
+          100% {
+            transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(0);
             opacity: 0;
           }
         }
-        .animate-float {
-          animation: float 2s ease-in-out infinite;
+        .particle-burst {
+          animation: particle-burst 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+        @keyframes particle-sparkle {
+          0%, 100% {
+            transform: scale(0);
+            opacity: 0;
+          }
+          50% {
+            transform: scale(1.5);
+            opacity: 1;
+          }
+        }
+        .particle-sparkle {
+          animation: particle-sparkle 1.2s ease-in-out infinite;
         }
       `}</style>
     </section>

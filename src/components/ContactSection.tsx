@@ -1,9 +1,16 @@
-import { useRef, useEffect, useState } from 'react'
+import { useRef, useEffect, useState, useCallback } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useStore } from '../store/useStore'
 
 gsap.registerPlugin(ScrollTrigger)
+
+// Ripple effect interface
+interface Ripple {
+  id: number
+  x: number
+  y: number
+}
 
 const socials = [
   { name: 'GitHub', url: 'https://github.com/koriyoshi2041', icon: '◈' },
@@ -97,6 +104,27 @@ export function ContactSection() {
   const socialsRef = useRef<HTMLDivElement>(null)
   const { setCursorVariant } = useStore()
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
+  const [ripples, setRipples] = useState<Ripple[]>([])
+  const rippleIdRef = useRef(0)
+
+  // Create ripple on click
+  const handleClick = useCallback((e: React.MouseEvent) => {
+    const rect = sectionRef.current?.getBoundingClientRect()
+    if (!rect) return
+
+    const newRipple: Ripple = {
+      id: rippleIdRef.current++,
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    }
+
+    setRipples((prev) => [...prev, newRipple])
+
+    // Remove ripple after animation
+    setTimeout(() => {
+      setRipples((prev) => prev.filter((r) => r.id !== newRipple.id))
+    }, 1500)
+  }, [])
 
   useEffect(() => {
     // Title animation
@@ -172,14 +200,36 @@ export function ContactSection() {
     <section
       ref={sectionRef}
       id="contact"
-      className="min-h-screen py-32 px-8 md:px-16 lg:px-24 flex items-center justify-center relative overflow-hidden"
+      className="min-h-screen py-32 px-8 md:px-16 lg:px-24 flex items-center justify-center relative overflow-hidden cursor-pointer"
       onMouseMove={handleMouseMove}
+      onClick={handleClick}
     >
-      {/* Dynamic gradient background */}
+      {/* Interactive ripple effects */}
+      {ripples.map((ripple) => (
+        <div
+          key={ripple.id}
+          className="absolute pointer-events-none ripple-effect"
+          style={{
+            left: ripple.x,
+            top: ripple.y,
+          }}
+        />
+      ))}
+
+      {/* Dynamic gradient background following mouse */}
       <div
-        className="absolute inset-0 opacity-30 transition-opacity duration-1000"
+        className="absolute inset-0 opacity-40 transition-opacity duration-300 pointer-events-none"
         style={{
-          background: `radial-gradient(circle at ${mousePos.x}% ${mousePos.y}%, var(--electric-blue) 0%, transparent 50%)`,
+          background: `radial-gradient(circle at ${mousePos.x}% ${mousePos.y}%, var(--electric-blue) 0%, transparent 40%)`,
+        }}
+      />
+
+      {/* Secondary glow that trails behind */}
+      <div
+        className="absolute inset-0 opacity-20 pointer-events-none"
+        style={{
+          background: `radial-gradient(600px circle at ${mousePos.x}% ${mousePos.y}%, var(--electric-blue), transparent 60%)`,
+          transition: 'background 0.5s ease-out',
         }}
       />
 
@@ -310,6 +360,25 @@ export function ContactSection() {
             transform: translate(-50%, -50%) scale(1.2);
             opacity: 0;
           }
+        }
+        @keyframes ripple {
+          0% {
+            width: 0;
+            height: 0;
+            opacity: 0.6;
+            transform: translate(-50%, -50%);
+          }
+          100% {
+            width: 600px;
+            height: 600px;
+            opacity: 0;
+            transform: translate(-50%, -50%);
+          }
+        }
+        .ripple-effect {
+          border-radius: 50%;
+          background: radial-gradient(circle, var(--electric-blue) 0%, transparent 70%);
+          animation: ripple 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
         }
       `}</style>
     </section>
