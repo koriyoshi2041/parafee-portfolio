@@ -1,9 +1,162 @@
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useStore } from '../store/useStore'
 
 gsap.registerPlugin(ScrollTrigger)
+
+// Typewriter code token type
+interface CodeToken {
+  text: string
+  color?: string
+}
+
+// Pre-tokenized code with colors (moved outside component to avoid re-creation)
+const CODE_LINES: CodeToken[][] = [
+  [
+    { text: 'const', color: 'var(--electric-blue)' },
+    { text: ' developer = {' },
+  ],
+  [
+    { text: '  ' },
+    { text: 'passion', color: '#ff79c6' },
+    { text: ': ' },
+    { text: '"infinite"', color: '#f1fa8c' },
+    { text: ',' },
+  ],
+  [
+    { text: '  ' },
+    { text: 'coffee', color: '#ff79c6' },
+    { text: ': ' },
+    { text: 'true', color: '#bd93f9' },
+    { text: ',' },
+  ],
+  [
+    { text: '  ' },
+    { text: 'creativity', color: '#ff79c6' },
+    { text: ': ' },
+    { text: '() =>', color: '#50fa7b' },
+    { text: ' ' },
+    { text: '"always"', color: '#f1fa8c' },
+  ],
+  [{ text: '};' }],
+]
+
+// Typewriter effect component
+function TypewriterCode() {
+  const [displayedTokens, setDisplayedTokens] = useState<CodeToken[][]>([])
+  const [currentLineIndex, setCurrentLineIndex] = useState(0)
+  const [currentCharIndex, setCurrentCharIndex] = useState(0)
+  const [isTyping, setIsTyping] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const { setCursorVariant } = useStore()
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !isTyping) {
+          setIsTyping(true)
+        }
+      },
+      { threshold: 0.5 }
+    )
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current)
+    }
+
+    return () => observer.disconnect()
+  }, [isTyping])
+
+  useEffect(() => {
+    if (!isTyping) return
+    if (currentLineIndex >= codeLines.length) return
+
+    // Calculate total chars in current line
+    const currentLine = codeLines[currentLineIndex]
+    const totalChars = currentLine.reduce((sum, token) => sum + token.text.length, 0)
+
+    if (currentCharIndex < totalChars) {
+      const timeout = setTimeout(() => {
+        // Build partial tokens up to currentCharIndex
+        let charCount = 0
+        const partialTokens: CodeToken[] = []
+
+        for (const token of currentLine) {
+          if (charCount + token.text.length <= currentCharIndex + 1) {
+            partialTokens.push(token)
+            charCount += token.text.length
+          } else {
+            const remaining = currentCharIndex + 1 - charCount
+            if (remaining > 0) {
+              partialTokens.push({
+                text: token.text.slice(0, remaining),
+                color: token.color,
+              })
+            }
+            break
+          }
+        }
+
+        setDisplayedTokens((prev) => {
+          const newTokens = [...prev]
+          newTokens[currentLineIndex] = partialTokens
+          return newTokens
+        })
+        setCurrentCharIndex((prev) => prev + 1)
+      }, 30 + Math.random() * 40)
+
+      return () => clearTimeout(timeout)
+    } else {
+      const timeout = setTimeout(() => {
+        setCurrentLineIndex((prev) => prev + 1)
+        setCurrentCharIndex(0)
+      }, 150)
+
+      return () => clearTimeout(timeout)
+    }
+  }, [isTyping, currentLineIndex, currentCharIndex, codeLines])
+
+  return (
+    <div
+      ref={containerRef}
+      className="mt-12 p-6 bg-[var(--void-deep)] rounded-lg border border-[var(--gray-subtle)] font-mono text-sm overflow-hidden relative"
+      onMouseEnter={() => setCursorVariant('hover')}
+      onMouseLeave={() => setCursorVariant('default')}
+    >
+      <div className="flex gap-2 mb-4">
+        <span className="w-3 h-3 rounded-full bg-[#ff5f56]" />
+        <span className="w-3 h-3 rounded-full bg-[#ffbd2e]" />
+        <span className="w-3 h-3 rounded-full bg-[#27ca40]" />
+      </div>
+      <pre className="text-[var(--gray-muted)] min-h-[120px]">
+        {displayedTokens.map((line, lineIdx) => (
+          <div key={lineIdx}>
+            {line.map((token, tokenIdx) => (
+              <span key={tokenIdx} style={{ color: token.color }}>
+                {token.text}
+              </span>
+            ))}
+            {lineIdx === currentLineIndex - 1 ||
+             (lineIdx === displayedTokens.length - 1 && currentLineIndex < codeLines.length) ? null : null}
+          </div>
+        ))}
+        {currentLineIndex < codeLines.length && (
+          <span className="inline-block w-2 h-4 bg-[var(--electric-blue)] animate-blink ml-0.5 align-middle" />
+        )}
+      </pre>
+      <style>{`
+        @keyframes blink {
+          0%, 50% { opacity: 1; }
+          51%, 100% { opacity: 0; }
+        }
+        .animate-blink {
+          animation: blink 1s infinite;
+        }
+      `}</style>
+    </div>
+  )
+}
 
 const skills = [
   { name: 'AI / Machine Learning', level: 92 },
