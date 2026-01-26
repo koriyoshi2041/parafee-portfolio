@@ -10,6 +10,8 @@ const projects = [
   { id: 2, title: 'Private MLaaS', category: 'FHE + Machine Learning', color: '#ff00d9', url: 'https://github.com/koriyoshi2041/Private-MLaaS-FHE' },
   { id: 3, title: 'BB84 Visualizer', category: 'Quantum Cryptography', color: '#00ff88', url: 'https://github.com/koriyoshi2041/BB84-Visualizer' },
   { id: 4, title: 'Lenia Vivarium', category: 'Artificial Life', color: '#ffcc00', url: 'https://github.com/koriyoshi2041/LeniaVivarium' },
+  { id: 5, title: '116 Days', category: 'Challenge Tracker', color: '#ff6b35', url: 'https://github.com/koriyoshi2041/116days' },
+  { id: 6, title: 'Startup Videos', category: 'Video Platform', color: '#8b5cf6', url: 'https://github.com/koriyoshi2041/startupvideos' },
 ]
 
 function ProjectCard({
@@ -102,38 +104,88 @@ function ProjectCard({
       onMouseEnter={handleMouseEnter}
       onClick={handleClick}
     >
-      {/* Animated background */}
+      {/* Animated background with vibrant gradients */}
       <div
         ref={imageRef}
         className="absolute inset-[-20px] transition-transform duration-700"
         style={{
           background: `
-            radial-gradient(circle at 30% 30%, ${project.color}22 0%, transparent 50%),
-            radial-gradient(circle at 70% 70%, ${project.color}11 0%, transparent 50%),
-            linear-gradient(135deg, var(--gray-subtle) 0%, var(--void-deep) 100%)
+            radial-gradient(ellipse at 20% 20%, ${project.color}55 0%, transparent 40%),
+            radial-gradient(ellipse at 80% 80%, ${project.color}44 0%, transparent 40%),
+            radial-gradient(ellipse at 50% 50%, ${project.color}22 0%, transparent 60%),
+            linear-gradient(135deg, #1a1a2e 0%, #0f0f1a 50%, var(--void-deep) 100%)
           `,
         }}
       />
 
-      {/* Animated grid pattern */}
+      {/* Animated mesh grid pattern */}
       <div
-        className="absolute inset-0 opacity-30 transition-opacity duration-500"
+        className="absolute inset-0 transition-all duration-700"
         style={{
           backgroundImage: `
-            linear-gradient(${project.color}15 1px, transparent 1px),
-            linear-gradient(90deg, ${project.color}15 1px, transparent 1px)
+            linear-gradient(${project.color}30 1px, transparent 1px),
+            linear-gradient(90deg, ${project.color}30 1px, transparent 1px)
           `,
-          backgroundSize: '30px 30px',
-          transform: isHovered ? 'scale(1.1)' : 'scale(1)',
-          transition: 'transform 0.7s ease-out',
+          backgroundSize: isHovered ? '25px 25px' : '40px 40px',
+          opacity: isHovered ? 0.5 : 0.25,
+          transform: isHovered ? 'perspective(500px) rotateX(10deg)' : 'none',
         }}
       />
 
-      {/* Glow effect on hover */}
+      {/* Floating orbs decoration */}
+      <div
+        className="absolute w-20 h-20 rounded-full transition-all duration-1000"
+        style={{
+          background: `radial-gradient(circle, ${project.color}66 0%, transparent 70%)`,
+          top: '15%',
+          right: '10%',
+          filter: 'blur(20px)',
+          transform: isHovered ? 'scale(1.5) translate(-10px, 10px)' : 'scale(1)',
+        }}
+      />
+      <div
+        className="absolute w-12 h-12 rounded-full transition-all duration-1000 delay-100"
+        style={{
+          background: `radial-gradient(circle, ${project.color}55 0%, transparent 70%)`,
+          bottom: '30%',
+          left: '15%',
+          filter: 'blur(15px)',
+          transform: isHovered ? 'scale(1.8) translate(10px, -10px)' : 'scale(1)',
+        }}
+      />
+
+      {/* Diagonal accent lines */}
+      <div
+        className="absolute inset-0 overflow-hidden pointer-events-none"
+        style={{ opacity: isHovered ? 0.4 : 0.15 }}
+      >
+        <div
+          className="absolute h-px transition-all duration-700"
+          style={{
+            background: `linear-gradient(90deg, transparent, ${project.color}, transparent)`,
+            width: '200%',
+            top: '25%',
+            left: '-50%',
+            transform: `rotate(-15deg) translateX(${isHovered ? '10%' : '0'})`,
+          }}
+        />
+        <div
+          className="absolute h-px transition-all duration-700 delay-100"
+          style={{
+            background: `linear-gradient(90deg, transparent, ${project.color}88, transparent)`,
+            width: '200%',
+            top: '60%',
+            left: '-50%',
+            transform: `rotate(-15deg) translateX(${isHovered ? '-10%' : '0'})`,
+          }}
+        />
+      </div>
+
+      {/* Center glow effect on hover */}
       <div
         className="absolute inset-0 transition-opacity duration-500"
         style={{
-          background: `radial-gradient(circle at 50% 50%, ${project.color}33 0%, transparent 70%)`,
+          background: `radial-gradient(circle at 50% 50%, ${project.color}55 0%, transparent 50%)`,
           opacity: isHovered ? 1 : 0,
         }}
       />

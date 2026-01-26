@@ -121,20 +121,21 @@ export function CustomCursor() {
       {/* Outer ring cursor */}
       <div
         ref={cursorRef}
-        className="fixed top-0 left-0 w-10 h-10 pointer-events-none z-[9998] mix-blend-difference"
+        className="fixed top-0 left-0 w-10 h-10 pointer-events-none z-[10001]"
         style={{
-          border: '1px solid var(--pure-white)',
+          border: '2px solid var(--pure-white)',
           borderRadius: '50%',
+          boxShadow: '0 0 15px rgba(255, 255, 255, 0.3)',
         }}
       />
       {/* Inner dot cursor */}
       <div
         ref={cursorDotRef}
-        className="fixed top-0 left-0 w-1.5 h-1.5 pointer-events-none z-[9999]"
+        className="fixed top-0 left-0 w-2 h-2 pointer-events-none z-[10002]"
         style={{
           backgroundColor: 'var(--electric-blue)',
           borderRadius: '50%',
-          boxShadow: '0 0 10px var(--electric-blue)',
+          boxShadow: '0 0 15px var(--electric-blue), 0 0 30px var(--electric-blue)',
         }}
       />
     </>
