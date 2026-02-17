@@ -10,7 +10,7 @@ const projects = [
   { id: 2, title: 'LearnSaaS', category: 'Next.js / Stripe / Auth.js', color: '#ff00d9', url: 'https://github.com/koriyoshi2041/learnsaas' },
   { id: 3, title: 'CC Learning Hooks', category: 'Claude Code / Dev Tools', color: '#ff6b35', url: 'https://github.com/koriyoshi2041/cc-learning-hooks' },
   { id: 4, title: 'Forward-Forward PyTorch', category: 'Deep Learning / Research', color: '#00ff88', url: 'https://github.com/koriyoshi2041/forward-forward-pytorch' },
-  { id: 5, title: 'Oh My ClaudeCode', category: 'Multi-Agent Orchestration', color: '#8b5cf6', url: 'https://github.com/koriyoshi2041/oh-my-claudecode' },
+  { id: 5, title: 'This Portfolio', category: 'React / GSAP / Creative Dev', color: '#8b5cf6', url: 'https://github.com/koriyoshi2041/parafee-portfolio' },
   { id: 6, title: 'Agent TipJar', category: 'Crypto / USDC on Base', color: '#ffcc00', url: 'https://github.com/koriyoshi2041/agent-tipjar' },
 ]
 
