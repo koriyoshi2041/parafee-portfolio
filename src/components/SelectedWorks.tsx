@@ -6,12 +6,12 @@ import { useStore } from '../store/useStore'
 gsap.registerPlugin(ScrollTrigger)
 
 const projects = [
-  { id: 1, title: 'This Portfolio', category: 'Creative Dev / WebGL', color: '#00d9ff', url: 'https://github.com/koriyoshi2041/parafee-portfolio' },
-  { id: 2, title: 'SCRAWL', category: 'MonadWorks', color: '#ff00d9', url: 'https://github.com/MonadWorks/SCRAWL' },
-  { id: 3, title: 'Claude Code Toolkit', category: 'MonadWorks / AI Tools', color: '#ff6b35', url: 'https://github.com/MonadWorks/claude-code-toolkit' },
-  { id: 4, title: 'Private MLaaS', category: 'FHE + Machine Learning', color: '#00ff88', url: 'https://github.com/koriyoshi2041/Private-MLaaS-FHE' },
-  { id: 5, title: 'BB84 Visualizer', category: 'Quantum Cryptography', color: '#8b5cf6', url: 'https://github.com/koriyoshi2041/BB84-Visualizer' },
-  { id: 6, title: 'Lenia Vivarium', category: 'Artificial Life', color: '#ffcc00', url: 'https://github.com/koriyoshi2041/LeniaVivarium' },
+  { id: 1, title: 'VibeCoder Learn', category: 'AI Education / Interactive App', color: '#00d9ff', url: 'https://github.com/koriyoshi2041/vibecoder-app' },
+  { id: 2, title: 'LearnSaaS', category: 'Next.js / Stripe / Auth.js', color: '#ff00d9', url: 'https://github.com/koriyoshi2041/learnsaas' },
+  { id: 3, title: 'CC Learning Hooks', category: 'Claude Code / Dev Tools', color: '#ff6b35', url: 'https://github.com/koriyoshi2041/cc-learning-hooks' },
+  { id: 4, title: 'Forward-Forward PyTorch', category: 'Deep Learning / Research', color: '#00ff88', url: 'https://github.com/koriyoshi2041/forward-forward-pytorch' },
+  { id: 5, title: 'Oh My ClaudeCode', category: 'Multi-Agent Orchestration', color: '#8b5cf6', url: 'https://github.com/koriyoshi2041/oh-my-claudecode' },
+  { id: 6, title: 'Agent TipJar', category: 'Crypto / USDC on Base', color: '#ffcc00', url: 'https://github.com/koriyoshi2041/agent-tipjar' },
 ]
 
 function ProjectCard({

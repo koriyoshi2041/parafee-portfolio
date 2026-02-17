@@ -172,3 +172,288 @@ html.lenis, html.lenis body {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--pure-white);
 }
+
+/* ============================================
+   SCROLL ENHANCEMENTS
+   ============================================ */
+
+/* Scroll container setup */
+.scroll-container {
+  --scroll-progress: 0;
+}
+
+/* Main content wrapper */
+.main-content {
+  position: relative;
+  will-change: transform;
+}
+
+/* Section transitions */
+.main-content section {
+  position: relative;
+  will-change: transform, opacity;
+  transform-origin: center top;
+}
+
+/* Smooth stagger reveal */
+.stagger-reveal > * {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.stagger-reveal.active > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.stagger-reveal > *:nth-child(1) { transition-delay: 0.1s; }
+.stagger-reveal > *:nth-child(2) { transition-delay: 0.2s; }
+.stagger-reveal > *:nth-child(3) { transition-delay: 0.3s; }
+.stagger-reveal > *:nth-child(4) { transition-delay: 0.4s; }
+.stagger-reveal > *:nth-child(5) { transition-delay: 0.5s; }
+.stagger-reveal > *:nth-child(6) { transition-delay: 0.6s; }
+
+/* Mask reveal effect */
+.mask-reveal {
+  clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+  transition: clip-path 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.mask-reveal.active {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+/* Split reveal - horizontal wipe */
+.split-reveal {
+  position: relative;
+  overflow: hidden;
+}
+
+.split-reveal::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--void-black);
+  transform-origin: right;
+  transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.split-reveal.active::after {
+  transform: scaleX(0);
+}
+
+/* Parallax layer classes */
+.parallax-slow {
+  transform: translateY(calc(var(--scroll-progress) * -50px));
+}
+
+.parallax-medium {
+  transform: translateY(calc(var(--scroll-progress) * -100px));
+}
+
+.parallax-fast {
+  transform: translateY(calc(var(--scroll-progress) * -150px));
+}
+
+/* Blur on scroll */
+.blur-on-scroll {
+  filter: blur(calc((1 - var(--section-visibility, 1)) * 10px));
+  transition: filter 0.3s ease;
+}
+
+/* Scale on scroll */
+.scale-on-scroll {
+  transform: scale(calc(0.9 + var(--section-visibility, 1) * 0.1));
+  transition: transform 0.3s ease;
+}
+
+/* Floating animation */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-10px) rotate(1deg);
+  }
+  50% {
+    transform: translateY(-5px) rotate(0deg);
+  }
+  75% {
+    transform: translateY(-15px) rotate(-1deg);
+  }
+}
+
+.float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.float-delayed {
+  animation: float 6s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+/* Glow pulse animation */
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px var(--electric-blue-dim);
+  }
+  50% {
+    box-shadow: 0 0 40px var(--electric-blue), 0 0 60px var(--electric-blue-dim);
+  }
+}
+
+.glow-pulse {
+  animation: glow-pulse 3s ease-in-out infinite;
+}
+
+/* Text shimmer effect */
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.text-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--pure-white) 0%,
+    var(--electric-blue) 25%,
+    var(--pure-white) 50%,
+    var(--electric-blue) 75%,
+    var(--pure-white) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 3s linear infinite;
+}
+
+/* Perspective scroll effect */
+.perspective-scroll {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+.perspective-scroll > * {
+  transform: translateZ(0);
+  transition: transform 0.5s ease;
+}
+
+/* Section divider animation */
+.section-divider {
+  position: relative;
+  height: 1px;
+  background: transparent;
+  overflow: hidden;
+}
+
+.section-divider::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--electric-blue),
+    transparent
+  );
+  transform: scaleX(0);
+  transition: transform 1.5s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.section-divider.active::before {
+  transform: scaleX(1);
+}
+
+/* Slide in from edges */
+.slide-in-left {
+  opacity: 0;
+  transform: translateX(-100px);
+  transition: all 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.slide-in-right {
+  opacity: 0;
+  transform: translateX(100px);
+  transition: all 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.slide-in-left.active,
+.slide-in-right.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Rotate in effect */
+.rotate-in {
+  opacity: 0;
+  transform: rotate(-10deg) scale(0.9);
+  transition: all 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.rotate-in.active {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+
+/* Depth fade - items fade based on scroll position */
+.depth-fade {
+  opacity: calc(1 - var(--scroll-depth, 0) * 0.5);
+  transform: scale(calc(1 - var(--scroll-depth, 0) * 0.1));
+}
+
+/* Elastic bounce on reveal */
+@keyframes elastic-reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(60px) scale(0.8);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-10px) scale(1.02);
+  }
+  80% {
+    transform: translateY(5px) scale(0.98);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+.elastic-reveal {
+  opacity: 0;
+}
+
+.elastic-reveal.active {
+  animation: elastic-reveal 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+}
+
+/* Clip path reveal variations */
+.clip-reveal-circle {
+  clip-path: circle(0% at 50% 50%);
+  transition: clip-path 1s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.clip-reveal-circle.active {
+  clip-path: circle(100% at 50% 50%);
+}
+
+.clip-reveal-diamond {
+  clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%);
+  transition: clip-path 1s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.clip-reveal-diamond.active {
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+
+/* Counter animation helper */
+.counter {
+  font-variant-numeric: tabular-nums;
+}

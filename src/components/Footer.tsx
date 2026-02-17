@@ -11,6 +11,9 @@ export function Footer() {
   const { setCursorVariant } = useStore()
 
   useEffect(() => {
+    const footer = footerRef.current
+    if (!footer) return
+
     // Animate the top border line
     gsap.fromTo(
       lineRef.current,
@@ -20,11 +23,44 @@ export function Footer() {
         duration: 1.5,
         ease: 'power3.inOut',
         scrollTrigger: {
-          trigger: footerRef.current,
+          trigger: footer,
           start: 'top 90%',
         },
       }
     )
+
+    // Staggered content reveal
+    const contentItems = footer.querySelectorAll('.footer-item')
+    gsap.fromTo(
+      contentItems,
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.1,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: footer,
+          start: 'top 85%',
+        },
+      }
+    )
+
+    // Parallax effect for decorative element
+    gsap.to(footer.querySelector('.footer-decoration'), {
+      y: -20,
+      scrollTrigger: {
+        trigger: footer,
+        start: 'top bottom',
+        end: 'bottom bottom',
+        scrub: true,
+      },
+    })
+
+    return () => {
+      ScrollTrigger.getAll().forEach(st => st.kill())
+    }
   }, [])
 
   return (
@@ -43,7 +79,7 @@ export function Footer() {
         <div className="grid md:grid-cols-3 gap-8 items-center py-8">
           {/* Logo/Brand */}
           <div
-            className="text-center md:text-left"
+            className="footer-item text-center md:text-left"
             onMouseEnter={() => setCursorVariant('hover')}
             onMouseLeave={() => setCursorVariant('default')}
           >
@@ -54,7 +90,7 @@ export function Footer() {
           </div>
 
           {/* Center - Back to top */}
-          <div className="text-center">
+          <div className="footer-item text-center">
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               className="group inline-flex flex-col items-center gap-2"
@@ -85,13 +121,13 @@ export function Footer() {
           </div>
 
           {/* Right - Time */}
-          <div className="text-center md:text-right font-mono text-xs text-[var(--gray-muted)]">
+          <div className="footer-item text-center md:text-right font-mono text-xs text-[var(--gray-muted)]">
             <TimeDisplay />
           </div>
         </div>
 
         {/* Bottom bar */}
-        <div className="pt-8 border-t border-[var(--gray-subtle)] flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="footer-item pt-8 border-t border-[var(--gray-subtle)] flex flex-col md:flex-row justify-between items-center gap-4">
           <span className="text-[var(--gray-muted)] text-sm">
             © {new Date().getFullYear()} Void Architect. All rights reserved.
           </span>
@@ -103,7 +139,7 @@ export function Footer() {
         </div>
 
         {/* Decorative bottom element */}
-        <div className="mt-8 flex justify-center">
+        <div className="footer-decoration mt-8 flex justify-center">
           <div className="flex items-center gap-4">
             <div className="w-8 h-px bg-gradient-to-r from-transparent to-[var(--gray-subtle)]" />
             <span className="font-mono text-[10px] text-[var(--gray-subtle)] tracking-[0.5em] uppercase">

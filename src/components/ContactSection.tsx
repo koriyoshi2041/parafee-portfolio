@@ -15,6 +15,7 @@ interface Ripple {
 const socials = [
   { name: 'GitHub', url: 'https://github.com/koriyoshi2041', icon: '◈' },
   { name: 'Twitter', url: 'https://x.com/ShuaizhiC54843', icon: '𝕏' },
+  { name: 'LinkedIn', url: 'https://www.linkedin.com/in/shuaizhi-cheng-82233b33a/', icon: 'in' },
 ]
 
 function MagneticButton({
